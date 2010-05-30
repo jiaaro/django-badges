@@ -1,0 +1,75 @@
+How to install:
+	1. Put the "badges" directory somewhere in your python path
+	2. Add "badges" to your installed apps (in the settings.py file)
+	3. Define the badges you wish to have on your site in the "badges.py" file of the badges app
+
+	4. OPTIONAL: If you want to use the pre-made badges overview/checklist page, 
+		add this to your main "urls.py" file:
+		
+		urlpatterns += patterns('',
+			(r'^badges/', include('badges.urls')),
+		)
+
+How to make badges:
+	The badges.py file that is included has all the badges currently in use on http://www.otakupri.de 
+	for examples. Here is how badge definitions work:
+	
+	Every badge is subclassed from "badges.utils.MetaBadge"
+
+	Here is an example badge that is awarded to users who fill in all the fields on their profile:
+
+		class autobiographer(Badge):
+			model = Profile
+			one_time_only = True
+			badge_info = {
+				"db_name" : "autobiographer",
+				"title" : "Autobiographer",
+				"description" : "Completed all user profile fields",
+				"level" : "b",          
+				}
+			conditions = (
+				"instance.name",
+				"instance.about",
+				"instance.location",
+				)
+
+	The badges are awarded using the post_save signal. So whenever a member of the 'model' is saved,
+	it checks to see if the user should be awarded a badge. In this case the model is "Profile" so
+	whenever a user profile is saved, the badges app checks each of the conditions and if they are 
+	all True, then the badge is awarded.
+
+	The "one_time_only" attribute is NOT YET IMPLEMENTED - when it is, it will determine whether a 
+		user can earn the badge more than once. If a badge was awarded for writing a post that
+		got 1000 views, you may want to award it for EACH post that gets 1000 views, instead of 
+		just the first time.
+
+	The "badge_info" attribute defines the information about the badge that will be shown on your
+	website:
+		
+		"db_name" - the unique name that will be used to identify the badge in your database. The
+						reason fo this is so that you can change the title, description, and level
+						without worry
+
+		
+		
+		"title" - the Name of the badge as it will appear on the website.
+	
+		"description" - a short description of the badge as it will appear on the website.
+
+		"level" - badges are either easy (bronze/b), medium (silver/s), or hard (gold/g) to get. It
+					would not be very hard to change the levels to something else like numbers.
+
+
+	Conditions are strings with begin with the instance of the object that is being saved. in this example
+	a profile is being saved. So the three conditions are equivalent to:
+
+		"user_profile.name"
+		"user_profile.about"
+		"user_profile.location"
+
+	...and the badge will be awarded if the following (equivalent) statement evaluates True:
+
+		bool(user_profile.name and user_profile.about and user_profile.location)
+
+	
+
