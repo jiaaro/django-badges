@@ -43,4 +43,5 @@ INSTALLED_APPS = (
     'django.contrib.sites',
     'django.contrib.admin',
     'badges',
+    'badges_tests',
 )
