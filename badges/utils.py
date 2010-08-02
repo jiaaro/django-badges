@@ -8,6 +8,11 @@ from badges.models import BadgeToUser
 
 registered_badges = {}
 
+def register(badge):
+    if badge.id not in registered_badges:
+        registered_badges[badge.id] = badge()
+    return badge
+
 
 class MetaBadgeMeta(type):
     
@@ -15,6 +20,7 @@ class MetaBadgeMeta(type):
         new_badge = super(MetaBadgeMeta, cls).__new__(cls, name, bases, attrs)
         parents = [b for b in bases if isinstance(b, MetaBadgeMeta)]
         if not parents:
+            # If this isn't a subclass of MetaBadge, don't do anything special.
             return new_badge
         return register(new_badge)
 
@@ -57,8 +63,3 @@ class MetaBadge(object):
         if self._test_conditions(instance):
             user = self.get_user(instance)
             self.badge.award_to(user)
-
-def register(badge):
-    if badge.id not in registered_badges:
-        registered_badges[badge.id] = badge()
-    return badge
