@@ -1,11 +1,27 @@
-from django.db.models.signals import post_save
-from django.db import models
 from django.core.urlresolvers import reverse
-from models import Badge as BadgeModel
-from models import BadgeToUser
+from django.db import models
+from django.db.models.signals import post_save
+
+from badges.models import Badge as BadgeModel
+from badges.models import BadgeToUser
+
+
+registered_badges = {}
+
+
+class MetaBadgeMeta(type):
+    
+    def __new__(cls, name, bases, attrs):
+        new_badge = super(MetaBadgeMeta, cls).__new__(cls, name, bases, attrs)
+        parents = [b for b in bases if isinstance(b, MetaBadgeMeta)]
+        if not parents:
+            return new_badge
+        return register(new_badge)
 
 
 class MetaBadge(object):
+    __metaclass__ = MetaBadgeMeta
+    
     one_time_only = False
     model = models.Model
     
@@ -42,10 +58,7 @@ class MetaBadge(object):
             user = self.get_user(instance)
             self.badge.award_to(user)
 
-registered_badges = {}
-
-def register(badge): 
-    if not registered_badges.has_key(badge.id):
+def register(badge):
+    if badge.id not in registered_badges:
         registered_badges[badge.id] = badge()
     return badge
-    

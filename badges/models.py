@@ -1,8 +1,10 @@
-from django.db import models
+from datetime import datetime
+
 from django.contrib.auth.models import User
 from django.core.urlresolvers import reverse
+from django.db import models
 
-from signals import badge_awarded
+from badges.signals import badge_awarded
 from badges.managers import BadgeManager
 
 LEVEL_CHOICES = (
@@ -58,4 +60,4 @@ class BadgeToUser(models.Model):
     badge = models.ForeignKey(Badge)
     user = models.ForeignKey(User)
     
-    created = models.DateTimeField(auto_now_add=True)
+    created = models.DateTimeField(default=datetime.now)

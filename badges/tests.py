@@ -1,10 +1,10 @@
 from django.test import TestCase
 from django.contrib.auth.models import User
 
-from utils import MetaBadge, registered_badges
-from utils import register as register_badge
-from signals import badge_awarded
-from models import Badge
+from badges.utils import MetaBadge, registered_badges
+from badges.utils import register as register_badge
+from badges.signals import badge_awarded
+from badges.models import Badge
 
 class BadgeTests(TestCase):
     def setUp(self):
@@ -22,19 +22,15 @@ class BadgeTests(TestCase):
                 return instance
             
             def check_email(self, instance):
-                return instance.email
+                return bool(instance.email)
             
         self.meta_badge = YouveGotMail
     
     def test_badge_creation(self):
-        register_badge(self.meta_badge)
         badge = Badge.objects.get(id=self.meta_badge.id)
         self.assertTrue(isinstance(badge.meta_badge, self.meta_badge))
         
-    def test_badge_registration_decorator(self):
-        meta_badge = register_badge(self.meta_badge)
-        self.assertTrue(meta_badge is self.meta_badge)
-        
+    def test_badge_registration(self):
         meta_badge_instance = registered_badges[self.meta_badge.id]
         self.assertTrue(isinstance(meta_badge_instance, self.meta_badge))
         
@@ -46,7 +42,6 @@ class BadgeTests(TestCase):
         self.assertTrue(registered_badges[meta_badge.id] is meta_badge_instance)
         
     def test_badge_earned_signal(self):
-        register_badge(self.meta_badge)
         test_self = self
         
         signal_handler_kwargs = {}

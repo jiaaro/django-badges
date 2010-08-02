@@ -1,5 +1,6 @@
 from django.conf.urls.defaults import *
-import views
+
+from badges import views
 
 urlpatterns = patterns('',
     url(r'^$', views.overview, name="badges_overview"),
