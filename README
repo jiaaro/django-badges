@@ -1,4 +1,5 @@
-How to install:
+== How to install ==
+
 	1. Put the "badges" directory somewhere in your python path
 	2. Add "badges" to your installed apps (in the settings.py file)
 	3. Define the badges you wish to have on your site in the "badges.py" file of the badges app
@@ -10,7 +11,9 @@ How to install:
 			(r'^badges/', include('badges.urls')),
 		)
 
-How to make badges:
+
+== How to make badges ==
+
 	I would encourage you to create a "meta_badges.py" file and import it at the bottom of your 
 	models.py file.
 	
@@ -69,7 +72,7 @@ How to make badges:
 	return "True," the badge will be awarded (unless it's a one-time-only and the user already has it)
 
 
-Signals:
+== Signals ==
 
 	When a badge is awarded, a signal is fired (found in badges.signals). The "sender" keyword argument 
 	is the metaBadge you defined (Autobiographer in this case), and NOT the badge model instance that 
@@ -86,7 +89,7 @@ Signals:
 		badge_awarded.connect(do_something_after_badge_is_awarded, sender=Autobiographer)
 
 
-Manually Awarding a Badge:
+== Manually Awarding a Badge ==
 
 	You can manually award a badge to a user using the "award_to" method on the Badge model instance.
 
