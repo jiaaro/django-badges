@@ -21,7 +21,6 @@ How to make badges:
 		import badges
 		from myapp.models import UserProfile
 
-		@badges.register
 		class Autobiographer(badges.MetaBadge):
 			id = "autobiographer"
 			model = UserProfile
