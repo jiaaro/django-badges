@@ -5,6 +5,7 @@ from django.db.models.signals import post_save
 from badges.models import Badge as BadgeModel
 from badges.models import BadgeToUser
 
+from django.contrib.auth.models import User
 
 registered_badges = {}
 
@@ -13,6 +14,30 @@ def register(badge):
         registered_badges[badge.id] = badge()
     return badge
 
+def badge_count(user_or_qs):
+    """
+    Given a user or queryset of users, this returns the badge
+    count at each badge level that the user(s) have earned.
+
+    Example:
+
+     >>> badge_count(User.objects.filter(username='admin'))
+     [{'count': 20, 'badge__level': u'1'}, {'count': 1, 'badge__level': u'2'}, {'count': 1, 'badge__level': u'3'}]
+
+    Uses a single database query.
+    """
+    if isinstance(user_or_qs, User):
+        kwargs = dict(user=user_or_qs)
+    else:
+        kwargs = dict(user__in=user_or_qs)
+
+    return BadgeToUser.objects.filter(
+        **kwargs
+    ).values(
+        'badge__level',
+    ).annotate(
+        count=models.Count('badge__level'),
+    ).order_by('badge__level')
 
 class MetaBadgeMeta(type):
     
