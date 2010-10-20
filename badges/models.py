@@ -3,16 +3,20 @@ from datetime import datetime
 from django.contrib.auth.models import User
 from django.core.urlresolvers import reverse
 from django.db import models
+from django.conf import settings
 
 from badges.signals import badge_awarded
 from badges.managers import BadgeManager
 
-LEVEL_CHOICES = (
+if hasattr(settings, 'BADGE_LEVEL_CHOICES'):
+    LEVEL_CHOICES = settings.BADGE_LEVEL_CHOICES
+else:
+    LEVEL_CHOICES = (
         ("1", "Bronze"),
         ("2", "Silver"),
         ("3", "Gold"),
         ("4", "Diamond"),
-        )
+    )
 
 class Badge(models.Model):
     id = models.CharField(max_length=255, primary_key=True)
@@ -55,6 +59,21 @@ class Badge(models.Model):
         user.message_set.create(message = message_template % self.title)
         
         return BadgeToUser.objects.filter(badge=self, user=user).count()
+
+    def number_awarded(self, user_or_qs=None):
+        """
+        Gives the number awarded total. Pass in an argument to
+        get the number per user, or per queryset.
+        """
+        kwargs = {'badge':self}
+        if user_or_qs is None:
+            pass
+        elif isinstance(user_or_qs, User):
+            kwargs.update(dict(user=user_or_qs))
+        else:
+            kwargs.update(dict(user__in=user_or_qs))
+        return BadgeToUser.objects.filter(**kwargs).count()
+
 
 class BadgeToUser(models.Model):
     badge = models.ForeignKey(Badge)

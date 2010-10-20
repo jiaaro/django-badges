@@ -14,7 +14,7 @@ def register(badge):
         registered_badges[badge.id] = badge()
     return badge
 
-def badge_count(user_or_qs):
+def badge_count(user_or_qs=None):
     """
     Given a user or queryset of users, this returns the badge
     count at each badge level that the user(s) have earned.
@@ -26,10 +26,13 @@ def badge_count(user_or_qs):
 
     Uses a single database query.
     """
-    if isinstance(user_or_qs, User):
-        kwargs = dict(user=user_or_qs)
+    kwargs = {}
+    if user_or_qs is None:
+        pass
+    elif isinstance(user_or_qs, User):
+        kwargs.update(dict(user=user_or_qs))
     else:
-        kwargs = dict(user__in=user_or_qs)
+        kwargs.update(dict(user__in=user_or_qs))
 
     return BadgeToUser.objects.filter(
         **kwargs
