@@ -1,4 +1,6 @@
-== How to install ==
+-*- markdown -*-
+
+## How to install ##
 
 	1. Put the "badges" directory somewhere in your python path
 	2. Add "badges" to your installed apps (in the settings.py file)
@@ -10,7 +12,7 @@
 			(r'^badges/', include('badges.urls')),
 		)
 
-== How to make badges ==
+## How to make badges ##
 
 	Create a "meta_badges.py" file and import it at the bottom of your 
 	models.py file. This is where you will define all badge classes. Every 
@@ -75,7 +77,7 @@
 			(gold/g) to get. It	would not be very hard to change the levels to 
 			something else like numbers.
 
-== Signals ==
+## Signals ##
 
 	When a badge is awarded, a signal is fired (found in badges.signals). The 
 	"sender" keyword argument is the metaBadge you defined (Autobiographer in 
@@ -95,7 +97,7 @@
 							  sender=Autobiographer)
 
 
-== Manually Awarding a Badge ==
+## Manually Awarding a Badge ##
 
 	You can manually award a badge to a user using the "award_to" method on the
 	Badge model instance.
