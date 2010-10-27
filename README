@@ -2,112 +2,125 @@
 
 ## How to install ##
 
-	1. Put the "badges" directory somewhere in your python path
-	2. Add "badges" to your installed apps (in the settings.py file)
+ 1. Put the "badges" directory somewhere in your python path
 
-	3. OPTIONAL: If you want to use the pre-made badges overview/checklist page, 
-		add this to your main "urls.py" file:
-		
-		urlpatterns += patterns('',
-			(r'^badges/', include('badges.urls')),
-		)
+ 2. Add "badges" to your installed apps (in the settings.py file)
+
+ 3. OPTIONAL: If you want to use the pre-made badges overview/checklist page, add this to your main "urls.py" file:
+    
+    urlpatterns += patterns('',
+        (r'^badges/', include('badges.urls')),
+    )
+
+
 
 ## How to make badges ##
 
-	Create a "meta_badges.py" file and import it at the bottom of your 
-	models.py file. This is where you will define all badge classes. Every 
-	badge is subclassed from "badges.MetaBadge"
+Create a "meta_badges.py" file and import it at the bottom of your 
+models.py file. This is where you will define all badge classes. Every 
+badge is subclassed from "badges.MetaBadge"
 
-	Here is an example badge that is awarded to users who fill in all the 
-	fields on their profile:
+Here is an example badge that is awarded to users who fill in all the 
+fields on their profile:
 
-		import badges
-		from myapp.models import UserProfile
+    import badges
+    from myapp.models import UserProfile
 
-		class Autobiographer(badges.MetaBadge):
-			id = "autobiographer"
-			model = UserProfile
-			one_time_only = True
+    class Autobiographer(badges.MetaBadge):
+        id = "autobiographer"
+        model = UserProfile
+        one_time_only = True
 
-			title = "Autobiographer"
-			description = "Completed the User Profile"
-			level = "1"
+        title = "Autobiographer"
+        description = "Completed the User Profile"
+        level = "1"
+        
+        def get_user(self, instance):
+            return instance.user
 
-			def get_user(self, instance):
-				return instance.user
+        def check_email(self, instance):
+            return instance.user.email            
 
-			def check_email(self, instance):
-				return instance.user.email		    
+The badges are awarded using the post_save signal. So whenever a member of 
+the model, in this case "UserProfile," is saved,
+it checks to see if the user should be awarded a badge.
 
-	The badges are awarded using the post_save signal. So whenever a member of 
-	the model, in this case "UserProfile," is saved,
-	it checks to see if the user should be awarded a badge.
-	
-	In this example, whenever a user profile is saved, the badges app checks 
-	each of the conditions and if they are 
-	all True, then the badge is awarded.
+In this example, whenever a user profile is saved, the badges app checks 
+each of the conditions and if they are 
+all True, then the badge is awarded.
 
-	The "get_user" method is passed the same instance as the condition checks 
-	and needs to return the	user who should receive the badge. The default is 
-	instance.user
+The "get_user" method is passed the same instance as the condition checks 
+and needs to return the    user who should receive the badge. The default is 
+instance.user
 
-	The "one_time_only" attribute determines whether a user can earn the badge 
-	more than once. If a badge was awarded for writing a post that got 1000 
-	views, you may want to award it for EACH post that gets 1000 views, instead 
-	of just the first time.
-		
-	Conditions are callback functions. Any methods of your badge class whose 
-	names start with "check" will be passed an instance of the model instance 
-	that has just been saved. If all the conditions	return "True," the badge 
-	will be awarded (unless it's a one-time-only and the user already has it).
+The "one_time_only" attribute determines whether a user can earn the badge 
+more than once. If a badge was awarded for writing a post that got 1000 
+views, you may want to award it for EACH post that gets 1000 views, instead 
+of just the first time.
+    
+Conditions are callback functions. Any methods of your badge class whose 
+names start with "check" will be passed an instance of the model instance 
+that has just been saved. If all the conditions    return "True," the badge 
+will be awarded (unless it's a one-time-only and the user already has it).
 
-	There are some badge info attributes which define the information about 
-	the badge that will be shown on your website:
-		
-		id - the unique name that will be used to identify the badge in your 
-			database. The reason for this is so that you can change the title, 
-			description, and level without worry
-		
-		title - the Name of the badge as it will appear on the website.
-	
-		description - a short description of the badge as it will appear on 
-			the website.
+There are some badge info attributes which define the information about 
+the badge that will be shown on your website:
 
-		level - badges are either easy (bronze/b), medium (silver/s), or hard 
-			(gold/g) to get. It	would not be very hard to change the levels to 
-			something else like numbers.
+    
+# id
+the unique name that will be used to identify the badge in your 
+database. The reason for this is so that you can change the title, 
+description, and level without worry
+
+
+# title
+the Name of the badge as it will appear on the website.
+
+
+# description
+a short description of the badge as it will appear on 
+the website.
+
+
+# level
+badges are either easy (bronze/b), medium (silver/s), or hard 
+(gold/g) to get. It    would not be very hard to change the levels to 
+something else like numbers.
+
+
 
 ## Signals ##
 
-	When a badge is awarded, a signal is fired (found in badges.signals). The 
-	"sender" keyword argument is the metaBadge you defined (Autobiographer in 
-	this case), and NOT the badge model instance that is automatically created. 
-	The "user" keyword argument is the user who the badge was awarded to, and 
-	the "badge" keyword argument is the model instance of the badge in the 
-	database (badges.models.Badge)
+When a badge is awarded, a signal is fired (found in badges.signals). The 
+"sender" keyword argument is the metaBadge you defined (Autobiographer in 
+this case), and NOT the badge model instance that is automatically created. 
+The "user" keyword argument is the user who the badge was awarded to, and 
+the "badge" keyword argument is the model instance of the badge in the 
+database (badges.models.Badge)
 
-	example:
+example:
 
-		from badges.signals import badge_awarded
+    from badges.signals import badge_awarded
 
-		def do_something_after_badge_is_awarded(sender, user, badge):
-			pass
+    def do_something_after_badge_is_awarded(sender, user, badge):
+        pass
 
-		badge_awarded.connect(do_something_after_badge_is_awarded, 
-							  sender=Autobiographer)
+    badge_awarded.connect(do_something_after_badge_is_awarded, 
+                          sender=Autobiographer)
+
 
 
 ## Manually Awarding a Badge ##
 
-	You can manually award a badge to a user using the "award_to" method on the
-	Badge model instance.
+You can manually award a badge to a user using the "award_to" method on the
+Badge model instance.
 
-	Example: Award a random badge to a random user...
+Example: Award a random badge to a random user...
 
-	from django.contrib.auth.models import User
-	from badges.models import Badge
+    from django.contrib.auth.models import User
+    from badges.models import Badge
 
-	random_user = User.objects.order_by("?")[0]
-	random_badge = Badges.objects.order_by("?")[0]
+    random_user = User.objects.order_by("?")[0]
+    random_badge = Badges.objects.order_by("?")[0]
 
-	random_badge.award_to(random_user)
+    random_badge.award_to(random_user)
