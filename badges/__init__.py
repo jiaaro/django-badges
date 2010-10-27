@@ -1,1 +1,1 @@
-from utils import register, registered_badges, MetaBadge
+from utils import registered_badges, MetaBadge
