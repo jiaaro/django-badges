@@ -100,6 +100,8 @@ class MetaBadge(object):
 
         if not progress:
             progress = self.get_progress(user)
+
+        progress = min(progress, self.progress_end)
         
         # multiply by a float to get floating point precision
         return (100.0 * progress) / (self.progress_finish - self.progress_start)
