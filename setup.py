@@ -18,8 +18,10 @@ setup(
     packages=['badges'],
     long_description=__doc__,
     classifiers=[
-        'License :: OSI Approved :: GPL License',
+    	'Development Status :: 5 - Production/Stable',
+        'License :: OSI Approved :: GNU General Public License (GPL)',
         'Programming Language :: Python',
+        'Framework :: Django',
         'Environment :: Web Environment',
         'Intended Audience :: Developers',
         'Operating System :: OS Independent',
