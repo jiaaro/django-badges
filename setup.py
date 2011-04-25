@@ -8,8 +8,9 @@ from setuptools import setup
 
 setup(
     name='django-badges',
-    version='0.1.3',
-    author='Jim Robert',
+    version='0.1.4',
+    author='James Robert',
+    author_email='jiaaro@gmail.com',
     description=('An easy to use app that provides Stack Overflow style badges'
                 'with a minimum ammount of effort in django'),
     license='GPLv3',
