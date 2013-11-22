@@ -1,6 +1,4 @@
--*- markdown -*-
-
-## How to install ##
+## How to install
 
  1. Put the "badges" directory somewhere in your python path
 
@@ -14,7 +12,7 @@
 
 
 
-## How to make badges ##
+## How to make badges
 
 Create a "meta_badges.py" file and import it at the bottom of your 
 models.py file. This is where you will define all badge classes. Every 
@@ -146,7 +144,7 @@ for a given user, `get_progress_percentage()` will still only return 100.0 (ie. 
 
 
 
-## Signals ##
+## Signals
 
 When a badge is awarded, a signal is fired (found in badges.signals). The 
 "sender" keyword argument is the metaBadge you defined (Autobiographer in 
