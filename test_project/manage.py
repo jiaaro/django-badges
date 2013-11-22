@@ -1,8 +1,5 @@
 #!/usr/bin/env python
-try:
-    from django.core.management import execute_from_command_line 
-except ImportError:
-    from django.core.management import execute_manager as execute_from_command_line
+
 try:
     import settings # Assumed to be in the same directory.
 except ImportError:
@@ -11,4 +8,9 @@ except ImportError:
     sys.exit(1)
 
 if __name__ == "__main__":
-    execute_from_command_line(settings)
+    try:
+        from django.core.management import execute_from_command_line 
+        execute_from_command_line()
+    except ImportError:
+        from django.core.management import execute_manager
+        execute_manager(settings)
