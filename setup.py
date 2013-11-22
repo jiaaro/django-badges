@@ -18,6 +18,10 @@ setup(
     url='http://djangobadges.com',
     packages=['badges', 'badges.templatetags'],
     package_data={'badges': ['badges/templates/badges/*.html']},
+    install_requires=[
+        "django >= 1.0",
+        "PIL",
+    ],
     long_description=__doc__,
     classifiers=[
     	'Development Status :: 5 - Production/Stable',
