@@ -1,9 +1,12 @@
 env:
-  - DJANGO=1.2
-  - DJANGO=1.3
-  - DJANGO=1.4
-  - DJANGO=1.5
-  - DJANGO=1.6
+  global:
+    - DJANGO_SETTINGS_MODULE=test_project.settings
+  matrix:
+    - DJANGO=1.2
+    - DJANGO=1.3
+    - DJANGO=1.4
+    - DJANGO=1.5
+    - DJANGO=1.6
 install:
   - pip install PIL django==${DJANGO}
   - pip install .
