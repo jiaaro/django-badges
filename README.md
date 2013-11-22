@@ -1,3 +1,5 @@
+[![travis ci](https://travis-ci.org/jiaaro/django-badges.png)](https://travis-ci.org/jiaaro/django-badges)
+
 ## How to install
 
  1. Put the "badges" directory somewhere in your python path
