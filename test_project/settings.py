@@ -7,6 +7,8 @@ sys.path.insert(0, os.path.join(PROJECT_ROOT, '..'))
 DEBUG = True
 TEMPLATE_DEBUG = DEBUG
 
+SECRET_KEY = "thisIsTotallyASecretJkLolHaHa!1!!1!"
+
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.sqlite3', # Add 'postgresql_psycopg2', 'postgresql', 'mysql', 'sqlite3' or 'oracle'.
