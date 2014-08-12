@@ -1,3 +1,4 @@
+import sys
 from django.core.urlresolvers import reverse
 from django.db import models
 from django.db.models.signals import post_save
@@ -109,7 +110,13 @@ class MetaBadge(object):
     def _keep_badge_updated(self):
         if getattr(self, 'badge', False):
             return False
-        badge, created = BadgeModel.objects.get_or_create(id=self.id)
+        
+        try:
+            badge, created = BadgeModel.objects.get_or_create(id=self.id)
+        except:
+            if len(sys.argv) > 1 and sys.argv[1] == 'syncdb':
+                return
+            
         if badge.level != self.level:
             badge.level = self.level
             badge.save()
