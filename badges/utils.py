@@ -116,6 +116,8 @@ class MetaBadge(object):
         except:
             if len(sys.argv) > 1 and sys.argv[1] == 'syncdb':
                 return
+            else:
+                raise
             
         if badge.level != self.level:
             badge.level = self.level
