@@ -29,7 +29,7 @@ class Badge(models.Model):
     
     @property
     def meta_badge(self):
-        from utils import registered_badges
+        from .utils import registered_badges
         return registered_badges[self.id]
     
     @property
