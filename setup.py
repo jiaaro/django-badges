@@ -20,7 +20,7 @@ setup(
     package_data={'badges': ['badges/templates/badges/*.html']},
     install_requires=[
         "django >= 1.0",
-        "PIL",
+        "Pillow",
     ],
     long_description=__doc__,
     classifiers=[
