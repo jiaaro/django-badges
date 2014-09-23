@@ -77,3 +77,6 @@ class BadgeToUser(models.Model):
     user = models.ForeignKey(User)
     
     created = models.DateTimeField(default=datetime.now)
+
+
+from . import listeners
