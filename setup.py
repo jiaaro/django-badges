@@ -19,7 +19,7 @@ setup(
     packages=['badges', 'badges.templatetags'],
     package_data={'badges': ['badges/templates/badges/*.html']},
     install_requires=[
-        "django >= 1.5",
+        "django >= 1.6",
         "Pillow",
     ],
     long_description=__doc__,
