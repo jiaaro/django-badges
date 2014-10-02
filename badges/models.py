@@ -20,7 +20,7 @@ else:
 
 class Badge(models.Model):
     id = models.CharField(max_length=255, primary_key=True)
-    user = models.ManyToManyField(User, related_name="badges", through='BadgeToUser')
+    user = models.ManyToManyField(settings.AUTH_USER_MODEL, related_name="badges", through='BadgeToUser')
     level = models.CharField(max_length=1, choices=LEVEL_CHOICES)
     
     icon = models.ImageField(upload_to='badge_images')
@@ -74,7 +74,7 @@ class Badge(models.Model):
 
 class BadgeToUser(models.Model):
     badge = models.ForeignKey(Badge)
-    user = models.ForeignKey(User)
+    user = models.ForeignKey(settings.AUTH_USER_MODEL)
     
     created = models.DateTimeField(default=datetime.now)
 
