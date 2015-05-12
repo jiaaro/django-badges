@@ -16,7 +16,7 @@ setup(
     license='GPLv3',
     keywords='django badges social',
     url='http://djangobadges.com',
-    packages=['badges', 'badges.templatetags'],
+    packages=['badges', 'badges.templatetags', 'badges.migrations'],
     package_data={'badges': ['badges/templates/badges/*.html']},
     install_requires=[
         "django >= 1.0",
