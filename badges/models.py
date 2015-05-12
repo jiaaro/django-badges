@@ -1,6 +1,6 @@
 from datetime import datetime
 
-from django.contrib.auth.models import User
+from django.contrib.auth import get_user_model
 from django.core.urlresolvers import reverse
 from django.db import models
 from django.conf import settings
@@ -65,7 +65,7 @@ class Badge(models.Model):
         kwargs = {'badge':self}
         if user_or_qs is None:
             pass
-        elif isinstance(user_or_qs, User):
+        elif isinstance(user_or_qs, get_user_model()):
             kwargs.update(dict(user=user_or_qs))
         else:
             kwargs.update(dict(user__in=user_or_qs))
