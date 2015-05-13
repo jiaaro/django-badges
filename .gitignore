@@ -7,5 +7,5 @@
 env
 *.swp
 .idea
-
 /build/
+.tox

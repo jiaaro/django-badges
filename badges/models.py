@@ -1,6 +1,6 @@
 from datetime import datetime
 
-from django.contrib.auth.models import User
+from django.contrib.auth import get_user_model
 from django.core.urlresolvers import reverse
 from django.db import models
 from django.conf import settings
@@ -20,7 +20,7 @@ else:
 
 class Badge(models.Model):
     id = models.CharField(max_length=255, primary_key=True)
-    user = models.ManyToManyField(User, related_name="badges", through='BadgeToUser')
+    user = models.ManyToManyField(settings.AUTH_USER_MODEL, related_name="badges", through='BadgeToUser')
     level = models.CharField(max_length=1, choices=LEVEL_CHOICES)
     
     icon = models.ImageField(upload_to='badge_images')
@@ -65,7 +65,7 @@ class Badge(models.Model):
         kwargs = {'badge':self}
         if user_or_qs is None:
             pass
-        elif isinstance(user_or_qs, User):
+        elif isinstance(user_or_qs, get_user_model()):
             kwargs.update(dict(user=user_or_qs))
         else:
             kwargs.update(dict(user__in=user_or_qs))
@@ -74,6 +74,9 @@ class Badge(models.Model):
 
 class BadgeToUser(models.Model):
     badge = models.ForeignKey(Badge)
-    user = models.ForeignKey(User)
+    user = models.ForeignKey(settings.AUTH_USER_MODEL)
     
     created = models.DateTimeField(default=datetime.now)
+
+
+from . import listeners

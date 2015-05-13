@@ -7,6 +7,8 @@ from badges.signals import badge_awarded
 from badges.models import Badge
 from badges.templatetags.badges_tags import badge_count, level_title, \
     level_count, number_awarded
+from badges.listeners import sync_badges_to_db
+
 
 class BadgeTests(TestCase):
     def setUp(self):
@@ -15,17 +17,18 @@ class BadgeTests(TestCase):
             id = 'youve-got-mail'
             model = User
             one_time_only = True
-            
+
             title = "You've got mail"
             description = "Filled in your E-mail address"
             level = "1"
-            
+
             def get_user(self, instance):
                 return instance
-            
+
             def check_email(self, instance):
                 return bool(instance.email)
-            
+
+        sync_badges_to_db()
         self.meta_badge = YouveGotMail
     
     def test_badge_creation(self):

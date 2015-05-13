@@ -72,9 +72,6 @@ class MetaBadge(object):
     progress_finish = 1
     
     def __init__(self):
-        # whenever the server is reloaded, the badge will be initialized and
-        # added to the database
-        self._keep_badge_updated()
         post_save.connect(self._signal_callback, sender=self.model)
     
     def _signal_callback(self, **kwargs):
@@ -107,24 +104,18 @@ class MetaBadge(object):
         # multiply by a float to get floating point precision
         return (100.0 * progress) / (self.progress_finish - self.progress_start)
     
-    def _keep_badge_updated(self):
-        if getattr(self, 'badge', False):
-            return False
-        
-        try:
-            badge, created = BadgeModel.objects.get_or_create(id=self.id)
-        except:
-            if len(sys.argv) > 1 and sys.argv[1] == 'syncdb':
-                return
-            else:
-                raise
-            
-        if badge.level != self.level:
-            badge.level = self.level
-            badge.save()
-        self.badge = badge
-    
     def award_ceremony(self, instance):
         if self._test_conditions(instance):
             user = self.get_user(instance)
             self.badge.award_to(user)
+
+    @property
+    def badge(self):
+        if not hasattr(self, "_badge"):
+            badge, created = BadgeModel.objects.get_or_create(id=self.id)
+            if badge.level != self.level:
+                badge.level = self.level
+                badge.save()
+            self._badge = badge
+
+        return self._badge
