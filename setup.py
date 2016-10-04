@@ -8,7 +8,7 @@ from setuptools import setup
 
 setup(
     name='django-badges',
-    version='0.2.0',
+    version='0.3.0',
     author='James Robert',
     author_email='jiaaro@gmail.com',
     description=('An easy to use app that provides Stack Overflow style badges'
@@ -19,7 +19,7 @@ setup(
     packages=['badges', 'badges.templatetags', 'badges.migrations'],
     package_data={'badges': ['badges/templates/badges/*.html']},
     install_requires=[
-        "django >= 1.6",
+        "django >= 1.7",
         "Pillow",
     ],
     long_description=__doc__,
