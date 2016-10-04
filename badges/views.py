@@ -1,5 +1,4 @@
-from django.shortcuts import render_to_response, get_object_or_404
-from django.template import RequestContext
+from django.shortcuts import render, get_object_or_404
 
 from models import Badge
 
@@ -8,7 +7,7 @@ def overview(request, extra_context={}):
     
     context = locals()
     context.update(extra_context)
-    return render_to_response("badges/overview.html", context, context_instance=RequestContext(request))
+    return render(request, "badges/overview.html", context)
 
 def detail(request, slug, extra_context={}):
     badge = get_object_or_404(Badge, id=slug)
@@ -16,4 +15,4 @@ def detail(request, slug, extra_context={}):
     
     context = locals()
     context.update(extra_context)
-    return render_to_response("badges/detail.html", context, context_instance=RequestContext(request))
+    return render(request, "badges/detail.html", context)
