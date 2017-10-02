@@ -1,11 +1,11 @@
-from django.conf.urls import include
+from django.conf.urls import include, url
 
 # Uncomment the next two lines to enable the admin:
 # from django.contrib import admin
 # admin.autodiscover()
 
 urlpatterns = [
-    (r'^badges/', include('badges.urls')),
+    url(r'^badges/', include('badges.urls')),
     # Example:
     # (r'^test_project/', include('test_project.foo.urls')),
 
