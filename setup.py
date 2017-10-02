@@ -21,6 +21,7 @@ setup(
     install_requires=[
         "django >= 1.6",
         "Pillow",
+        "future"
     ],
     long_description=__doc__,
     classifiers=[
