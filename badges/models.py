@@ -43,7 +43,10 @@ class Badge(models.Model):
     
     def __unicode__(self):
         return "%s" % self.title
-    
+
+    def __str__(self):
+        return self.title
+
     def get_absolute_url(self):
         return reverse('badge_detail', kwargs={'slug': self.id})
     
