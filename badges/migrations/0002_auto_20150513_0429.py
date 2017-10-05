@@ -18,8 +18,8 @@ class Migration(migrations.Migration):
             name='Badge',
             fields=[
                 ('id', models.CharField(max_length=255, serialize=False, primary_key=True)),
-                ('level', models.CharField(max_length=1, choices=[(b'1', b'Bronze'), (b'2', b'Silver'), (b'3', b'Gold'), (b'4', b'Diamond')])),
-                ('icon', models.ImageField(upload_to=b'badge_images')),
+                ('level', models.CharField(max_length=1, choices=[('1', 'Bronze'), ('2', 'Silver'), ('3', 'Gold'), ('4', 'Diamond')])),
+                ('icon', models.ImageField(upload_to='badge_images')),
             ],
         ),
         migrations.CreateModel(

@@ -1,3 +1,5 @@
+from future.utils import with_metaclass
+
 from django.db import models
 from django.db.models.signals import post_save
 from django.contrib.auth.models import User
@@ -60,9 +62,7 @@ class MetaBadgeMeta(type):
         return register(new_badge)
 
 
-class MetaBadge(object):
-    __metaclass__ = MetaBadgeMeta
-    
+class MetaBadge(with_metaclass(MetaBadgeMeta, object)):
     one_time_only = False
     model = models.Model
 

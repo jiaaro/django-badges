@@ -1,3 +1,4 @@
+from __future__ import unicode_literals
 from datetime import datetime
 
 from django.contrib.auth import get_user_model
@@ -34,15 +35,18 @@ class Badge(models.Model):
     
     @property
     def title(self):
-        return self.meta_badge.title
+        return str(self.meta_badge.title)
     
     @property
     def description(self):
         return self.meta_badge.description
     
     def __unicode__(self):
-        return u"%s" % self.title
-    
+        return "%s" % self.title
+
+    def __str__(self):
+        return self.title
+
     def get_absolute_url(self):
         return reverse('badge_detail', kwargs={'slug': self.id})
     
