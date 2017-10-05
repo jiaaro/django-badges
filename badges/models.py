@@ -35,7 +35,7 @@ class Badge(models.Model):
     
     @property
     def title(self):
-        return self.meta_badge.title
+        return str(self.meta_badge.title)
     
     @property
     def description(self):
