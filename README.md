@@ -23,10 +23,10 @@ badge is subclassed from "badges.MetaBadge"
 Here is an example badge that is awarded to users who fill in all the 
 fields on their profile:
 
-    import badges
+    from badges.utils import MetaBadge
     from myapp.models import UserProfile
 
-    class Autobiographer(badges.MetaBadge):
+    class Autobiographer(MetaBadge):
         id = "autobiographer"
         model = UserProfile
         one_time_only = True
